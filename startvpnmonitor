@@ -1,4 +1,0 @@
-#!/bin/bash
-screen -SX vpnmonitor quit
-screen -dmS vpnmonitor ./vpnmonitor
-echo "vpnmonitoring has started -- see it with screen -r vpnmonitor"
