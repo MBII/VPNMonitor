@@ -15,7 +15,7 @@ fi
 
 currentTime="date +%T"
 connectFormat="^(?:\s|[0-9])+[0-9]+:[0-9]+\sClientConnect:.*IP:\s[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
-echo "VPN monitor - original version by devon, modified by Spaghetti"
+echo "VPN monitor - original version by devon, modified by Spaghetti, further modified by 2cwldys"
 echo "version 1.1 - 2021/9/12"
 echo "`$currentTime` Monitoring `echo $logpath | awk -F '/' '{print $NF}'` for server at $rconip:$rconport"
 
@@ -58,12 +58,18 @@ do
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' svsay ^3Potential VPN detection for client '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			echo "`$currentTime` $connectIP : allowed & warned"
 		elif [[ $vpn == 1 || $vpn == 2 ]]; then
-			echo "`$currentTime` $connectIP : VPN detected"
+			echo "`$currentTime` $connectIP : VPN detected, kicked in 5 seconds!"
 			sqlite3 "$databasepath" "INSERT INTO iplist(ip, vpn) VALUES ('$connectIP', $vpn)"
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' addip '"$connectIP"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
+			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' marktk '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
+			sleep 2s
+			echo "`$currentTime` $connectIP : VPN detected, kicked in 3 seconds!"
+			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' marktk '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
+			sleep 3s
+			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' marktk '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' kick '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' svsay ^1Banned client '"$connectID"' for VPN use\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
-			echo "`$currentTime` $connectIP : banned & kicked"
+			echo "`$currentTime` $connectIP : banned & kicked."
 		else	
 			echo "invalid response, doing nothing"
 		fi
