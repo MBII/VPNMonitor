@@ -63,6 +63,7 @@ do
 			sqlite3 "$databasepath" "INSERT INTO iplist(ip, vpn) VALUES ('$connectIP', $vpn)"
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' addip '"$connectIP"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' marktk '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
+			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' mute '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			sleep 5s
 			echo "`$currentTime` $connectIP : VPN detected, kicked in 10 seconds!"
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' svsay ^5[Bot] ^1VPN ^7use detected! ^3'"$connectID"' ^7kicked in 10 seconds!\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
@@ -73,7 +74,7 @@ do
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' marktk '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			sleep 5s
 			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' kick '"$connectID"'\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
-			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' svsay ^1Banned client '"$connectID"' for VPN use\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
+			printf '\xFF\xFF\xFF\xFFrcon '"$rconpass"' svsay ^5[Bot] ^1Banned client ^3'"$connectID"' ^1for VPN use!\n' | nc -u -n -w 1 $rconip $rconport > /dev/null
 			echo "`$currentTime` $connectIP : banned & kicked."
 		else	
 			echo "invalid response, doing nothing"
