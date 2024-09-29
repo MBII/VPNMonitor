@@ -14,7 +14,7 @@ else
 fi
 
 currentTime="date +%T"
-connectFormat="^(?:\s|[0-9])+[0-9]+:[0-9]+\sClientConnect:.*IP:\s[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
+connectFormat="^(\s|[0-9])+[0-9]+:[0-9]+\sClientConnect:.*IP:\s[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"
 echo "VPN monitor - original version by devon, modified by Spaghetti, further modified by 2cwldys"
 echo "version 1.1 - 2021/9/12"
 echo "`$currentTime` Monitoring `echo $logpath | awk -F '/' '{print $NF}'` for server at $rconip:$rconport"
@@ -37,7 +37,7 @@ do
 		echo "`$currentTime` $connectIP : was not found in database"
 		echo "`$currentTime` $connectIP : checking for VPN"
 		response=$(curl -s http://v2.api.iphub.info/ip/"$connectIP" -H "X-Key: $apikey")
-		#echo "`$currentTime` $connectIP : $response" # uncomment if you need to debug the API response
+		echo "`$currentTime` $connectIP : $response" # uncomment if you need to debug the API response
 		if [[ "$response" =~ '"block":0' ]]; then
 			vpn=0
 		elif [[ "$response" =~ '"block":1' ]]; then
